@@ -1,5 +1,14 @@
 # React_Native_Frontend
 
+## Prerequisites
+Before you begin, ensure you have the following software installed on your machine:
+
+- Node.js (v18.x.x or higher)
+- npm (v9.x.x or higher)
+- React (v18.2.0 or higher)
+- React Native (v0.71.3 or higher)
+- Android Studio, Xcode or Expo go (for running the application on a simulator or a device)
+
 ## Installation
 
 1. Clone the repository:

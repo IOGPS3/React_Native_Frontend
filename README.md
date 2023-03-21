@@ -7,7 +7,7 @@ Before you begin, ensure you have the following software installed on your machi
 - npm (v9.x.x or higher) [npm -v]
 - React (v18.2.0 or higher)
 - React Native (v0.71.3 or higher)
-- Android Studio, Xcode [Andriod] or Expo go [IOS] (for running the application on a simulator or a device)
+- Android Studio, Xcode or Expo go [IOS, Android] (for running the application on a simulator or a device)
 
 ## Installation
 

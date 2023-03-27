@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable } from 'react-native';
 
+//added for the <Icon /> element
+//install with command:
+//npm install @rneui/themed @rneui/base
+import { Icon } from '@rneui/base'; 
+
 //list
 const EmployeeList = () => {
   const [employeeData] = useState([
@@ -58,13 +63,12 @@ const EmployeeList = () => {
             }}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>{selectedEmployee.name}</Text>
+                <View style = {{width: 300, Height: 300, flexDirection: 'row'}}>
+                    <Icon reverse name='arrow-back' onPress={() => setModalVisible(!modalVisible)} />
+                    <Text style={styles.modalText}>{selectedEmployee.name}</Text>
+                    <Icon name='star' style={{marginLeft: 30}} />
+                </View>
                 <Text style={styles.modalText}>{selectedEmployee.location}</Text>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>Hide Modal</Text>
-                </Pressable>
               </View>
             </View>
           </Modal>
@@ -134,23 +138,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
+    modalText: {
+        fontSize: 25,
+        marginLeft: 30,
+        textAlign: 'center',
+    },
 });
 
 export default EmployeeList;

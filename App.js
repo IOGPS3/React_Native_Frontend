@@ -1,31 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, TextInput } from 'react-native';
+import { app } from './firebaseConfig';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
-/**
- * A component that displays a list of employees and allows the user to view their details.
- *
- * @returns {JSX.Element} - The EmployeeList component.
- */
 const EmployeeList = () => {
-  // Define the initial employee data, selected employee, modal visibility, and search query using the `useState` hook.
-  const [employeeData] = useState([
-    { name: 'Alice', location: 'Floor 2' },
-    { name: 'Bob', location: 'Floor 1' },
-    { name: 'Charlie', location: 'Floor 2' },
-    { name: 'David', location: 'Home' },
-    { name: 'Eve', location: 'Floor 5' },
-    { name: 'Frank', location: 'Floor 2' },
-    { name: 'Grace', location: 'Floor 1' },
-    { name: 'Henry', location: 'Floor 3' },
-    { name: 'Isabella', location: 'Floor 2' },
-    { name: 'Jack', location: 'Home' },
-    { name: 'Kate', location: 'Floor 4' },
-    { name: 'Luke', location: 'Home' },
-    { name: 'Hank', location: 'Floor 5'},
-  ]);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [modalVisible, setModalVisible] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+    // State variables for employee data, selected employee, modal visibility, and search query
+    const [employeeData, setEmployeeData] = useState([]);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Fetch data from Firebase Real-Time Database and update the employeeData state
+    useEffect(() => {
+        // Get a reference to the Firebase Real-Time Database
+        const database = getDatabase();
+
+        // Create a reference to the 'users' node
+        const usersRef = ref(database, 'users');
+
+        // Set up a listener for changes in the 'users' node
+        // The listener will be called with a snapshot of the data whenever it changes
+        const unsubscribe = onValue(usersRef, (snapshot) => {
+            // Extract the user data from the snapshot
+            const users = snapshot.val();
+
+            // Convert the user data object to an array of user objects
+            const formattedUsers = Object.values(users || {});
+
+            // Update the employeeData state with the fetched data
+            setEmployeeData(formattedUsers);
+        });
+
+        // Clean up the listener when the component is unmounted
+        return () => {
+            unsubscribe();
+        };
+    }, []);
 
 /**
  * Groups an array of employees by the first letter of their first name.

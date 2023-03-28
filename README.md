@@ -46,3 +46,10 @@ npm run android
 ```bash
 npm start
 ```
+
+
+## Troubleshooting
+If you run into tmpl errors do the following
+```
+npm install tmpl
+```

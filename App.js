@@ -16,26 +16,7 @@ import { styles } from './Styling/AppStyle';
  *
  * @returns {JSX.Element} - The EmployeeList component.
  */
-const EmployeeList = () => {
-    // Define the initial employee data, selected employee, modal visibility, and search query using the `useState` hook.
-    const [employeeData] = useState([
-        { name: 'Alice', location: 'Floor 2' },
-        { name: 'Bob', location: 'Floor 1' },
-        { name: 'Charlie', location: 'Floor 2' },
-        { name: 'David', location: 'Home' },
-        { name: 'Eve', location: 'Floor 5' },
-        { name: 'Frank', location: 'Floor 2' },
-        { name: 'Grace', location: 'Floor 1' },
-        { name: 'Henry', location: 'Floor 3' },
-        { name: 'Isabella', location: 'Floor 2' },
-        { name: 'Jack', location: 'Home' },
-        { name: 'Kate', location: 'Floor 4' },
-        { name: 'Luke', location: 'Home' },
-        { name: 'Hank', location: 'Floor 5' },
-    ]);
-    const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [modalVisible, setModalVisible] = useState(true);
-    const [searchQuery, setSearchQuery] = useState('');
+
 const EmployeeList = () => {
     // State variables for employee data, selected employee, modal visibility, and search query
     const [employeeData, setEmployeeData] = useState([]);

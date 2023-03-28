@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, TextInput } from 'react-native';
 
+//added for the <Icon /> element
+//install with command:
+//npm install @rneui/themed @rneui/base
+import { Icon } from '@rneui/base';
+
+//import styling
+import { styles } from './Styling/AppStyle';
+
 /**
  * A component that displays a list of employees and allows the user to view their details.
  *
@@ -94,37 +102,32 @@ const EmployeeList = () => {
         <View style={styles.container}>
             {selectedEmployee && (
                 <View style={styles.selectedEmployeeContainer}>
-                    <Text style={styles.selectedEmployeeName}>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={modalVisible}
-                            onRequestClose={() => {
-                                Alert.alert('Modal has been closed.');
-                                setModalVisible(!modalVisible);
-                            }}>
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            //Alert.alert('Modal has been closed.');
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <View style={{ width: 300, Height: 600, flexDirection: 'row' }}>
+                                    <Icon reverse name='arrow-back' onPress={() => setModalVisible(!modalVisible)} />
                                     <Text style={styles.modalText}>{selectedEmployee.name}</Text>
-                                    <Text style={styles.modalText}>{selectedEmployee.location}</Text>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setModalVisible(!modalVisible)}>
-                                        <Text style={styles.textStyle}>Ping</Text>
-                                        </Pressable>
-                                    <Pressable
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setModalVisible(!modalVisible)}>
-                                        <Text style={styles.textStyle}>Hide Modal</Text>
-                                    </Pressable>
+                                    <Icon name='star' style={{ marginLeft: 30 }} />
                                 </View>
+                                <Text style={styles.modalText}>{selectedEmployee.location}</Text>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => setModalVisible(!modalVisible)}>
+                                    <Text style={styles.textStyle}>Ping</Text>
+                                </Pressable>
                             </View>
-                        </Modal>
-                    </Text>
-                    </View>
-    
-    )
-}
+                        </View>
+                    </Modal>
+                </View>  
+            )}
 {/* TextInput component to display the searchbar*/ }
 <TextInput
     style={styles.searchInput}
@@ -149,71 +152,5 @@ const EmployeeList = () => {
         </View >
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 22,
-    },
-    header: {
-        backgroundColor: '#f2f2f2',
-        fontSize: 16,
-        fontWeight: 'bold',
-        padding: 10,
-    },
-    item: {
-        padding: 10,
-        fontSize: 18,
-        height: 44,
-    },
-    selectedEmployeeContainer: {
-        marginTop: 20,
-        padding: 10,
-        backgroundColor: '#f2f2f2',
-    },
-    selectedEmployeeName: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
-});
 
 export default EmployeeList;

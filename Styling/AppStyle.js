@@ -67,4 +67,13 @@ export const styles = StyleSheet.create({
         marginLeft: 30,
         textAlign: 'center',
     },
+
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
 });

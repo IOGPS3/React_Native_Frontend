@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, TextInput } from 'react-native';
+import { app } from './firebaseConfig';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
 //added for the <Icon /> element
 //install with command:
@@ -34,6 +36,42 @@ const EmployeeList = () => {
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [modalVisible, setModalVisible] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+const EmployeeList = () => {
+    // State variables for employee data, selected employee, modal visibility, and search query
+    const [employeeData, setEmployeeData] = useState([]);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Fetch data from Firebase Real-Time Database and update the employeeData state
+    useEffect(() => {
+        // Get a reference to the Firebase Real-Time Database
+        const database = getDatabase();
+
+        // Create a reference to the 'users' node
+        const usersRef = ref(database, 'users');
+
+        // Set up a listener for changes in the 'users' node
+        // The listener will be called with a snapshot of the data whenever it changes
+        const unsubscribe = onValue(usersRef, (snapshot) => {
+            // Extract the user data from the snapshot
+            const users = snapshot.val();
+
+            // Convert the user data object to an array of user objects
+            const formattedUsers = Object.values(users || {});
+
+            // Update the employeeData state with the fetched data
+            setEmployeeData(formattedUsers);
+        });
+
+        // Clean up the listener when the component is unmounted
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
+
+
 
     /**
      * Groups an array of employees by the first letter of their first name.

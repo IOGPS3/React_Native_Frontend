@@ -55,8 +55,7 @@ const EmployeeList = () => {
   <View style={styles.container}>
   {selectedEmployee && (
       <View style={styles.selectedEmployeeContainer}>
-        <Text style={styles.selectedEmployeeName}>
-          <Modal
+        <Modal
             animationType="slide"
             transparent={true}
             visible={modalVisible}
@@ -75,7 +74,6 @@ const EmployeeList = () => {
               </View>
             </View>
           </Modal>
-        </Text>
       </View>
     )}
     <SectionList

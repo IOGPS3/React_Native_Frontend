@@ -43,11 +43,22 @@ const EmployeeList = () => {
     return acc;
   }, {});
 
+  /**
+  * Filters the employeeData array based on the searchQuery.
+  *
+  * @param {array} employeeData - The array of employee objects to filter.
+  * @param {string} searchQuery - The query string to filter the employeeData array by.
+  * @returns {array} The filtered array of employee objects that match the search query.
+  */
   const filteredEmployees = employeeData.filter(employee => {
-    return (
-      employee.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+    if (searchQuery === '') {
+      // If the searchQuery is an empty string, return an empty array.
+      return 0;
+    } else {
+      // If the searchQuery is not empty, return any employees whose name contains the searchQuery.
+      return employee.name.toLowerCase().includes(searchQuery.toLowerCase());
+  }
+});
 
   /**
  * Builds an array of sections for a list of employees, sorted alphabetically by first letter.
@@ -127,17 +138,21 @@ const EmployeeList = () => {
       />
     {/* SectionList component to display the employee list */}
     <SectionList
-      sections={filteredEmployees.length > 0 ? [{ data: filteredEmployees }] : sections}
-        keyExtractor={(item, index) => item.name + index}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleEmployeePress(item)}>
-            <Text style={styles.item}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
-        )}
-        extraData={searchQuery}
+      sections={
+      searchQuery
+        ? [{ data: filteredEmployees }]
+        : sections
+    }
+    keyExtractor={(item, index) => item.name + index}
+    renderItem={({ item }) => (
+      <TouchableOpacity onPress={() => handleEmployeePress(item)}>
+        <Text style={styles.item}>{item.name}</Text>
+      </TouchableOpacity>
+    )}
+    renderSectionHeader={({ section: { title } }) => (
+      <Text style={styles.header}>{title}</Text>
+    )}
+    extraData={searchQuery}
     />
   </View>
 );

@@ -8,13 +8,13 @@ const MeetingSlider = () => {
 
     return (
         <View style={stylesSlider.container}>
-            <Text style={stylesSlider.text}>{sliderValue === 0 ? 'In meeting' : 'Available'}</Text>
+            <Text style={stylesSlider.text}>{sliderValue === 1 ? 'In meeting' : 'Available'}</Text>
             <Slider
                 style={stylesSlider.slider}
                 minimumValue={0}
                 maximumValue={1}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
+                minimumTrackTintColor="#FF0000"
+                maximumTrackTintColor="#00FF00"
                 step={1}
                 onValueChange={value => setSliderValue(value)}
             />

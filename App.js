@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import EmployeeList from './components/EmployeeList';
-import MeetingSlider from './components/MeetingSlider';
+import MeetingSlider from './components/meetingSlider';
 import { styles } from './Styling/AppStyle';
 
 

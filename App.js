@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import EmployeeList from './components/EmployeeList';
 import MeetingSlider from './components/MeetingSlider';
+import { styles } from './Styling/AppStyle';
 
 
 const App = () => {
@@ -13,11 +14,5 @@ const App = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 30, // Add some padding to the top of the screen
-    },
-});
 
 export default App;

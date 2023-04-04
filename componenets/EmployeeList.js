@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, TextInput } from 'react-native';
 
 //import styling
-import { styles } from '../Styles/components/EmployeeListStyle';
+import { styles } from '../Styling/components/EmployeeListStyle';
 
 /**
  * A component that displays a list of employees and allows the user to view their details.

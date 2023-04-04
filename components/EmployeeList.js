@@ -9,7 +9,7 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 import { Icon } from '@rneui/base';
 
 //import styling
-import { styles } from '../Styling/AppStyle';
+import { styles } from '../Styling/components/EmployeeListStyle';
 
 /**
  * A component that displays a list of employees and allows the user to view their details.

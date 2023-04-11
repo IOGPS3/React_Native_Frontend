@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { styles } from '../Styling/components/MeetingSliderStyle';
 import { getDatabase, ref, onValue, off } from 'firebase/database';
 
-//const API_BASE_URL = 'http://localhost:3000'; // Replace with the API's base URL
+const API_BASE_URL = 'http://localhost:3000'; // Replace with the API's base URL
 
 const MeetingSlider = () => {
     const [sliderValue, setSliderValue] = useState(0);
@@ -31,22 +31,26 @@ const MeetingSlider = () => {
 
 
     // This code does not work. No api present at this moment. This route should be updated.
-    //const updateMeetingStatus = (value) => {
-    //    const status = value === 1 ? 'inMeeting' : 'available';
-    //    fetch(`${API_BASE_URL}/api/users/${userId}/meeting-status`, {
-    //        method: 'PUT',
-    //        headers: {
-    //            'Content-Type': 'application/json',
-    //        },
-    //        body: JSON.stringify({ meetingStatus: status }),
-    //    })
-    //        .then(() => {
-    //            setSliderValue(value);
-    //        })
-    //        .catch(error => {
-    //            console.error('Error updating user data:', error);
-    //        });
-    //};
+    const updateMeetingStatus = (value) => {
+        const status = value === 1 ? 'inMeeting' : 'available';
+        fetch(`${API_BASE_URL}/api/users/${userId}/meeting-status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ meetingStatus: status }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    setSliderValue(value);
+                } else {
+                    throw new Error('Bad request');
+                }
+            })
+            .catch(error => {
+                Alert.alert('Error', 'Failed to update meeting status. Please try again.', [{ text: 'OK' }]);
+            });
+    };
 
     return (
         <View style={styles.container}>

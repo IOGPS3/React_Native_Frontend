@@ -48,10 +48,6 @@ const EmployeeList = () => {
         return () => {
             unsubscribe();
         };
-
-        //Create an array of employees marked as favorite
-        const favoriteEmployees = Array.from(new Set(favoriteEmployeeIds)).sort();
-        setFavorites(favoriteEmployees);
     }, []);
 
     const employeesByLetter = employeeData.reduce((acc, employee) => {
@@ -77,6 +73,12 @@ const EmployeeList = () => {
         } else {
             // If the searchQuery is not empty, return any employees whose name contains the searchQuery.
             return employee.name.toLowerCase().includes(searchQuery.toLowerCase());
+        }
+    });
+
+    const favoriteEmployees = employeeData.filter(employee => {
+        if (employee.favorite == ) {
+            return employee.name
         }
     });
 
@@ -106,3 +108,4 @@ const EmployeeList = () => {
         setSelectedEmployee(employee);
         setModalVisible(true);
     };
+}

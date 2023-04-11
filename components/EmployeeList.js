@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, TextInput } from 'react-native';
 import { app } from '../firebaseConfig';
 import { getDatabase, ref, onValue } from 'firebase/database';
@@ -58,7 +58,7 @@ const EmployeeList = () => {
      * @returns {object} - An object containing employees grouped by the first letter of their first name.
      */
     const employeesByLetter = employeeData.reduce((acc, employee) => {
-        const firstLetter = employee.name.charAt(0);
+        const firstLetter = employee.name.charAt(0).toUpperCase();
         if (!acc[firstLetter]) {
             acc[firstLetter] = [];
         }

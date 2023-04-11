@@ -62,7 +62,7 @@ const MeetingSlider = () => {
             setSliderValue(value);
         }
         else {
-            value(0);
+            
         }
 
     };

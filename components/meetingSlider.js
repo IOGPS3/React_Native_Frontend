@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { styles } from '../Styling/components/MeetingSliderStyle';
-import { getDatabase, ref, onValue, off, update } from 'firebase/database';
+import { getDatabase, ref, onValue, off } from 'firebase/database';
 
+//const API_BASE_URL = 'http://localhost:3000'; // Replace with the API's base URL
 
 const MeetingSlider = () => {
     const [sliderValue, setSliderValue] = useState(0);
@@ -28,13 +29,24 @@ const MeetingSlider = () => {
         };
     }, [userId]);
 
-    const updateMeetingStatus = (value) => {
-        const status = value === 1 ? 'inMeeting' : 'available';
-        const database = getDatabase();
-        const userRef = ref(database, `users/${userId}`);
-        update(userRef, { meetingStatus: status });
-        setSliderValue(value);
-    };
+
+    // This code does not work. No api present at this moment. This route should be updated.
+    //const updateMeetingStatus = (value) => {
+    //    const status = value === 1 ? 'inMeeting' : 'available';
+    //    fetch(`${API_BASE_URL}/api/users/${userId}/meeting-status`, {
+    //        method: 'PUT',
+    //        headers: {
+    //            'Content-Type': 'application/json',
+    //        },
+    //        body: JSON.stringify({ meetingStatus: status }),
+    //    })
+    //        .then(() => {
+    //            setSliderValue(value);
+    //        })
+    //        .catch(error => {
+    //            console.error('Error updating user data:', error);
+    //        });
+    //};
 
     return (
         <View style={styles.container}>
@@ -52,6 +64,5 @@ const MeetingSlider = () => {
         </View>
     );
 };
-
 
 export default MeetingSlider;

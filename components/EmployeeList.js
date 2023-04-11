@@ -73,7 +73,7 @@ const EmployeeList = () => {
     * @param {string} searchQuery - The query string to filter the employeeData array by.
     * @returns {array} The filtered array of employee objects that match the search query.
     */
-    const filteredEmployees = employeeData.filter(employee => {
+    const filteredEmployees = employeeData.sort((a, b) => a.name.localeCompare(b.name)).filter(employee => {
         if (searchQuery === '') {
             // If the searchQuery is an empty string, return an empty array.
             return 0;

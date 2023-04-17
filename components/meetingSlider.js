@@ -48,9 +48,16 @@ const MeetingSlider = () => {
                     
             //    }
             //})
+            .then(setSliderValue(value))    //this line should be deleted when the API is finished
             .catch(error => {
                 Alert.alert('Error', 'Failed to update meeting status. Please try again.', [{ text: 'OK' }]);
-                //sliderValue(0);
+                //possibly check if there is a better way to do the following piece of code
+                if (value == 0) {
+                    setSliderValue(1);
+                }
+                else {
+                    setSliderValue(0);
+                }
                 throw new Error('Bad request');
             });
     };

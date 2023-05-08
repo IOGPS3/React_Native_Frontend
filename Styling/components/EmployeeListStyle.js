@@ -4,14 +4,15 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 22,
+        backgroundColor: 'white',
     },
     centered: {
         alignItems: 'center',
     },
     header: {
         fontSize: 28,
-        padding: 10,
-        backgroundColor: 'transparent',
+        paddingLeft: 10,
+        backgroundColor: 'white',
     },
     headerSeparator: {
         borderBottomWidth: 2,
@@ -30,12 +31,23 @@ export const styles = StyleSheet.create({
         height: 40,
         borderColor: 'black',
         borderWidth: 2,
-        borderRadius: 20, // Make the search bar pill-shaped
-        paddingLeft: 45, // Add padding to make space for the search icon
-        paddingRight: 45, // Add padding to make space for the cross icon
-        width: '95%', // Set width to 90% of the screen width
-        alignSelf: 'center', // Center the search bar horizontally
-        marginVertical: 10, // Add some vertical margin
+        borderRadius: 20,
+        paddingLeft: 45, 
+        paddingRight: 45, 
+        width: '95%', 
+        alignSelf: 'center', 
+        marginVertical: 10, 
+    },
+
+    employeeItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    availabilityIndicator: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginLeft: 11,
     },
 
     buttonHeyThere: {

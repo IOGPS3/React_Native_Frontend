@@ -4,12 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import EmployeeList from './components/EmployeeList';
-import MeetingSlider from './components/MeetingSlider';
+import MeetingToggle from './components/MeetingToggle';
 import { styles } from './Styling/AppStyle';
 import logo from './assets/favicon.png';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import MeetingToggle from './components/MeetingToggle';
+
 
 
 const Home = () => {
@@ -27,31 +27,27 @@ const Home = () => {
             </View>
 
             <Text style={styles.font}>Co-Workers</Text>
-            {/*<MeetingSlider />*/}
         </View>
     );
 };
 
-const SearchCoworker = () => {
-    // Implement your Search Coworker screen here
+const SearchCoworker = () => {   
     return <EmployeeList />;
 };
 
 const Settings = () => {
-    // Implement your Settings screen here
     return <View />;
 };
 
 const Logout = () => {
-    // Implement your Logout functionality here
     return <View />;
 };
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
-    const iconSize = 32; // Set your desired icon size
-    const fontSize = 18; // Set your desired font size
+    const iconSize = 32; 
+    const fontSize = 18; 
     const fontColor = 'black';
     const iconColor = 'black';
 
@@ -94,7 +90,7 @@ const CustomHeader = ({ navigation }) => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
                 <MaterialIcons
                     name="menu"
-                    size={36} // Adjust the size of the hamburger icon as needed
+                    size={36} 
                     onPress={() => navigation.toggleDrawer()}
                 />
                 <Text>

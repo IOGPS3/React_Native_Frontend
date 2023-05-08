@@ -25,6 +25,15 @@ const EmployeeList = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
+
+
+
+    const [searchActive, setSearchActive] = useState(false);
+
+
+
+
+
     // Fetch data from Firebase Real-Time Database and update the employeeData state
     useEffect(() => {
         // Get a reference to the Firebase Real-Time Database
@@ -175,17 +184,28 @@ const EmployeeList = () => {
                 </View>
             </View>
             <SectionList
-                sections={sections}
-                keyExtractor={(item) => item.id} // Use 'id' from the user object
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handleEmployeePress(item)}>
-                        <Text style={styles.item}>{item.Name}</Text>
-                    </TouchableOpacity>
+                    item && (
+                        <TouchableOpacity onPress={() => handleEmployeePress(item)} style={styles.employeeItem}>
+                            <View
+                                style={[
+                                    styles.availabilityIndicator,
+                                    {
+                                        backgroundColor: item.MeetingStatus === 'available' ? '#76FF60' : '#FF0000',
+                                    },
+                                ]}
+                            />
+                            <Text style={[styles.item, { color: 'blue' }]}>{item.Name}</Text>
+                        </TouchableOpacity>
+                        )
                 )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <View style={styles.headerSeparator}>
-                        <Text style={styles.header}>{title}</Text>
-                    </View>
+                sections={sections}
+                renderSectionHeader={({ section: { title, data } }) => (
+                    data.length > 0 && (
+                        <View style={styles.headerSeparator}>
+                            <Text style={styles.header}>{title}</Text>
+                        </View>
+                    )
                 )}
                 extraData={searchQuery}
             />

@@ -1,32 +1,51 @@
 import { StyleSheet } from 'react-native';
 
-//export default styles = StyleSheet.create({
-//    // or export const styles = StyleSheet.create({
-//    Container: {
-//        flex: 1,
-//        flexDirection: 'column',
-//        justifyContent: 'center',
-//        alignItems: 'center',
-//        backgroundColor: '#fff',
-//    },
-//})
-
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 22,
     },
+    centered: {
+        alignItems: 'center',
+    },
     header: {
-        backgroundColor: '#f2f2f2',
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 28,
         padding: 10,
+        backgroundColor: 'transparent',
+    },
+    headerSeparator: {
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+        width: '95%',
+        alignSelf: 'center',
     },
     item: {
         padding: 10,
         fontSize: 18,
         height: 44,
+        fontSize: 20,
+        color: 'blue',
     },
+    searchInput: {
+        height: 40,
+        borderColor: 'black',
+        borderWidth: 2,
+        borderRadius: 20, // Make the search bar pill-shaped
+        paddingLeft: 45, // Add padding to make space for the search icon
+        paddingRight: 45, // Add padding to make space for the cross icon
+        width: '95%', // Set width to 90% of the screen width
+        alignSelf: 'center', // Center the search bar horizontally
+        marginVertical: 10, // Add some vertical margin
+    },
+
+    buttonHeyThere: {
+        backgroundColor: '#EE7F54',
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginTop: 20,
+    },
+
     selectedEmployeeContainer: {
         marginTop: 20,
         padding: 10,

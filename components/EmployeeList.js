@@ -7,6 +7,7 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 //install with command:
 //npm install @rneui/themed @rneui/base
 import { Icon } from '@rneui/base';
+import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons for search and cross icons
 
 //import styling
 import { styles } from '../Styling/components/EmployeeListStyle';
@@ -38,8 +39,11 @@ const EmployeeList = () => {
             // Extract the user data from the snapshot
             const users = snapshot.val();
 
-            // Convert the user data object to an array of user objects
-            const formattedUsers = Object.values(users || {});
+            // Updated formatting of user data to include the user key as 'id'
+            const formattedUsers = Object.entries(users || {}).map(([id, userData]) => ({
+                id,
+                ...userData,
+            }));
 
             // Update the employeeData state with the fetched data
             setEmployeeData(formattedUsers);
@@ -62,7 +66,7 @@ const EmployeeList = () => {
      * @returns {object} - An object containing employees grouped by the first letter of their first name.
      */
     const employeesByLetter = employeeData.reduce((acc, employee) => {
-        const firstLetter = employee.name.charAt(0);
+        const firstLetter = employee.Name.charAt(0);
         if (!acc[firstLetter]) {
             acc[firstLetter] = [];
         }
@@ -70,11 +74,14 @@ const EmployeeList = () => {
         return acc;
     }, {});
 
-    const filteredEmployees = employeeData.filter(employee => {
-        return (
-            employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+    // Update filtering logic to filter employees within each group in employeesByLetter
+    const filteredEmployeesByLetter = Object.entries(employeesByLetter).reduce((acc, [letter, employees]) => {
+        acc[letter] = employees.filter(employee =>
+            employee.Name.toLowerCase().includes(searchQuery.toLowerCase())
         );
-    });
+        return acc;
+    }, {});
+
 
     /**
    * Builds an array of sections for a list of employees, sorted alphabetically by first letter.
@@ -84,11 +91,11 @@ const EmployeeList = () => {
    *
    * @returns {void} 
    */
-    const sections = Object.keys(employeesByLetter)
+    const sections = Object.keys(filteredEmployeesByLetter)
         .sort()
         .map(letter => ({
             title: letter,
-            data: employeesByLetter[letter],
+            data: filteredEmployeesByLetter[letter],
         }));
 
     /**
@@ -126,45 +133,59 @@ const EmployeeList = () => {
                         transparent={true}
                         visible={modalVisible}
                         onRequestClose={() => {
-                            //Alert.alert('Modal has been closed.');
                             setModalVisible(!modalVisible);
-                        }}>
+                        }}
+                    >
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                                <View style={{ width: 300, Height: 600, flexDirection: 'row' }}>
-                                    <Icon reverse name='arrow-back' onPress={() => setModalVisible(!modalVisible)} />
-                                    <Text style={styles.modalText}>{selectedEmployee.name}</Text>
-                                    <Icon name='star' style={{ marginLeft: 30 }} />
-                                </View>
-                                <Text style={styles.modalText}>{selectedEmployee.location}</Text>
+                                <Text style={styles.modalText}>{selectedEmployee.Name}</Text>
+                                <Text style={styles.modalText}>{selectedEmployee.Location}</Text>
+                                <Text style={styles.modalText}>{selectedEmployee.MeetingStatus === 'available' ? 'Available' : 'In a meeting'}</Text>
                                 <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Ping</Text>
+                                    style={[styles.button, styles.buttonHeyThere]}
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                >
+                                    <Text style={styles.textStyle}>HeyThere</Text>
                                 </Pressable>
                             </View>
                         </View>
                     </Modal>
+
                 </View>
             )}
             {/* TextInput component to display the searchbar*/}
-            <TextInput
-                style={styles.searchInput}
-                value={searchQuery}
-                onChangeText={query => setSearchQuery(query)}
-                placeholder="Search employees"
-            />
-            {/* SectionList component to display the employee list */}
+            <View style={styles.centered}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <MaterialIcons name="search" size={24} color="black" style={{ position: 'absolute', left: 20 }} />
+                    <TextInput
+                        style={styles.searchInput}
+                        value={searchQuery}
+                        onChangeText={query => setSearchQuery(query)}
+                        placeholder="Search employees"
+                    />
+                    {searchQuery.length > 0 && (
+                        <MaterialIcons
+                            name="cancel"
+                            size={24}
+                            color="black"
+                            style={{ position: 'absolute', right: 20 }}
+                            onPress={() => setSearchQuery('')}
+                        />
+                    )}
+                </View>
+            </View>
             <SectionList
-                sections={filteredEmployees.length > 0 ? [{ data: filteredEmployees }] : sections}
-                keyExtractor={(item, index) => item.name + index}
+                sections={sections}
+                keyExtractor={(item) => item.id} // Use 'id' from the user object
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleEmployeePress(item)}>
-                        <Text style={styles.item}>{item.name}</Text>
+                        <Text style={styles.item}>{item.Name}</Text>
                     </TouchableOpacity>
                 )}
                 renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
+                    <View style={styles.headerSeparator}>
+                        <Text style={styles.header}>{title}</Text>
+                    </View>
                 )}
                 extraData={searchQuery}
             />

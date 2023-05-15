@@ -3,10 +3,10 @@ import { View, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
-import EmployeeList from './components/EmployeeList';
+import SearchCoworker from './components/SearchCoworker/SearchCoworker';
 import MeetingToggle from './components/MeetingToggle';
 import { styles } from './Styling/AppStyle';
-import logo from './assets/favicon.png';
+import logo from './assets/iO-logo.png';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -31,9 +31,6 @@ const Home = () => {
     );
 };
 
-const SearchCoworker = () => {   
-    return <EmployeeList />;
-};
 
 const Settings = () => {
     return <View />;
@@ -90,7 +87,7 @@ const CustomHeader = ({ navigation }) => {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
                 <MaterialIcons
                     name="menu"
-                    size={36} 
+                    size={45} 
                     onPress={() => navigation.toggleDrawer()}
                 />
                 <Text>

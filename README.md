@@ -44,3 +44,23 @@ npm run android
 ```bash
 npm run web
 ```
+
+## Coworker search feature
+### Using the Coworker Search Feature
+This application includes a search feature to easily find and locate specific coworkers. 
+Here are the steps to use this feature:
+
+1. From the home screen, tap on the hamburger menu icon.
+2. Select the 'Search Coworker' option.
+3. In the search field, enter the full name or any part of the name of the coworker you are searching for.
+4. The application will display a list of coworkers whose names match your search criteria. You can scroll through this list to find the coworker you are looking for.
+5. Tap on a coworker's name to view more detailed information about them, such as their meeting status and location.
+
+### How it works
+The 'Search Coworker' feature is implemented in a dedicated component located at components/SearchCoworker/SearchCoworker.js.
+
+This component is integrated into the main application through App.js. 
+The SearchCoworker.js file uses the @react-navigation/stack to manage the coworker list and the details view.
+
+When the list of coworkers is displayed, a user can select an individual coworker. 
+This triggers the EmployeeDetails.js screen to be loaded on top of the list, displaying detailed information about the selected coworker.

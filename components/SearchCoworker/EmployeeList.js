@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, TextInput } from 'react-native';
-import { app } from '../firebaseConfig';
+import { app } from '../../firebaseConfig';
 import { getDatabase, ref, onValue } from 'firebase/database';
-
-//added for the <Icon /> element
-//install with command:
-//npm install @rneui/themed @rneui/base
-import { Icon } from '@rneui/base';
 import { MaterialIcons } from '@expo/vector-icons'; // Import MaterialIcons for search and cross icons
-
-//import styling
-import { styles } from '../Styling/components/EmployeeListStyle';
+import { styles } from '../../Styling/components/EmployeeListStyle';
 
 /**
  * A component that displays a list of employees and allows the user to view their details.
@@ -18,34 +11,19 @@ import { styles } from '../Styling/components/EmployeeListStyle';
  * @returns {JSX.Element} - The EmployeeList component.
  */
 
-const EmployeeList = () => {
+const EmployeeList = ({ navigation }) => {
     // State variables for employee data, selected employee, modal visibility, and search query
     const [employeeData, setEmployeeData] = useState([]);
-    const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-
-
-
-
-    const [searchActive, setSearchActive] = useState(false);
-
-
-
-
 
     // Fetch data from Firebase Real-Time Database and update the employeeData state
     useEffect(() => {
-        // Get a reference to the Firebase Real-Time Database
         const database = getDatabase();
-
-        // Create a reference to the 'users' node
         const usersRef = ref(database, 'users');
 
         // Set up a listener for changes in the 'users' node
         // The listener will be called with a snapshot of the data whenever it changes
         const unsubscribe = onValue(usersRef, (snapshot) => {
-            // Extract the user data from the snapshot
             const users = snapshot.val();
 
             // Updated formatting of user data to include the user key as 'id'
@@ -115,8 +93,7 @@ const EmployeeList = () => {
      * @returns {void}
      */
     const handleEmployeePress = employee => {
-        setSelectedEmployee(employee);
-        setModalVisible(true);
+        navigation.navigate('EmployeeDetails', { employee });
     };
 
     /**
@@ -135,33 +112,7 @@ const EmployeeList = () => {
    */
     return (
         <View style={styles.container}>
-            {selectedEmployee && (
-                <View style={styles.selectedEmployeeContainer}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.modalText}>{selectedEmployee.Name}</Text>
-                                <Text style={styles.modalText}>{selectedEmployee.Location}</Text>
-                                <Text style={styles.modalText}>{selectedEmployee.MeetingStatus === 'available' ? 'Available' : 'In a meeting'}</Text>
-                                <Pressable
-                                    style={[styles.button, styles.buttonHeyThere]}
-                                    onPress={() => setModalVisible(!modalVisible)}
-                                >
-                                    <Text style={styles.textStyle}>HeyThere</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </Modal>
 
-                </View>
-            )}
             {/* TextInput component to display the searchbar*/}
             <View style={styles.centered}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>

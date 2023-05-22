@@ -5,7 +5,11 @@ import { Platform } from 'react-native';
 export const RegisterForPushNotification = async () => {
     let token;
 
-    console.log("Platform = " + Platform.OS)
+    let devOptions = true;
+
+    if (devOptions) {
+        console.log("Platform = " + Platform.OS)
+    }
 
     if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {
@@ -16,13 +20,27 @@ export const RegisterForPushNotification = async () => {
         });
     }
 
+    if (devOptions) {
+        console.log("Platform setnotifications has been setup")
+    }
+
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
+    if (devOptions) {
+        console.log("Status checker = " + finalStatus)
+    }
+
     if (existingStatus !== 'granted') {
-        console.log("requesting permission")
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
+        try {
+            console.log("requesting permission")
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        catch (error) {
+            console.error(error);
+            console.log("Error = " + error)
+        }
     }
     if (finalStatus !== 'granted') {
         alert('Failed to get push token for push notification!');

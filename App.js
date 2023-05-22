@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
@@ -8,9 +8,16 @@ import MeetingToggle from './components/MeetingToggle';
 import { styles } from './Styling/AppStyle';
 import logo from './assets/iO-logo.png';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RegisterForPushNotification } from './components/Notification';
 
-
-
+import * as Notifications from 'expo-notifications';
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false
+    }),
+});
 
 const Home = () => {
     return (
@@ -100,6 +107,15 @@ const CustomHeader = ({ navigation }) => {
 
 
 const App = () => {
+    const [expoPushToken, setExpoPushToken] = useState('');
+
+    useEffect(() => {
+        RegisterForPushNotification().then(token => {
+            setExpoPushToken(token);
+            console.log(token);
+        })
+    }, []);
+
     return (
         <NavigationContainer>
             <Drawer.Navigator

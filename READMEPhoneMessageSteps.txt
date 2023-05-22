@@ -1,6 +1,7 @@
 TODO:
 1. login to expo account on expo cli(command line) within the project
 1.1 my command was "npx expo login -u YOUR-USERNAME-OR-EMAIL -p YOUR-PASSWORD"
+1.2 same account as on website: https://expo.dev/
 
 2. to test goto: https://expo.dev/notifications
 2.1 have your project running 

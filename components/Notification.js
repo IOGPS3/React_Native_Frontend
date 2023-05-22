@@ -31,21 +31,23 @@ export const RegisterForPushNotification = async () => {
         console.log("Status checker = " + finalStatus)
     }
 
-    if (existingStatus !== 'granted') {
-        try {
-            console.log("requesting permission")
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-        }
-        catch (error) {
-            console.error(error);
-            console.log("Error = " + error)
-        }
-    }
-    if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-    }
+    //if (existingStatus !== 'granted') {
+    //    console.log("requesting permission")
+    //    const { status } = await Notifications.requestPermissionsAsync();
+    //    finalStatus = status;
+
+    //    //try {
+            
+    //    //}
+    //    //catch (error) {
+    //    //    console.error(error);
+    //    //    console.log("Error = " + error)
+    //    //}
+    //}
+    //if (finalStatus !== 'granted') {
+    //    alert('Failed to get push token for push notification!');
+    //    return;
+    //}
 
     console.log("permission's been granted")
     token = (await Notifications.getExpoPushTokenAsync()).data;

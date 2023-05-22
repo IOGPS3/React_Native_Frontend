@@ -115,7 +115,7 @@ const App = () => {
     useEffect(() => {
         RegisterForPushNotification().then(token => {
             setExpoPushToken(token);
-            console.log(token);
+            //console.log(token);
         });
 
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {

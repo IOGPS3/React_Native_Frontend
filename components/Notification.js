@@ -51,7 +51,7 @@ export const RegisterForPushNotification = async () => {
 
     console.log("permission's been granted")
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token)
+    console.log("recipent ExponentPushToken = " + token)
 
     return token;
 }

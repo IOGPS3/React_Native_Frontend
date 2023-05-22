@@ -17,7 +17,8 @@ export const RegisterForPushNotification = async () => {
     }
 
     console.log("has permissions")
-    token = (await Notifications.getExpoPushTokenAsync({ projectId: "dac6212c-ca63-4d33-bec4-443aaa56db22" })).data;
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token)
 
     if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {

@@ -1,24 +1,11 @@
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
+//import { Platform } from '../node_modules/react-native/types/index';
 
 export const RegisterForPushNotification = async () => {
     let token;
 
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== 'granted') {
-        console.log("requesting")
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-    }
-
-    console.log("has permissions")
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token)
+    console.log("Platform = " + Platform.OS)
 
     if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {
@@ -28,6 +15,23 @@ export const RegisterForPushNotification = async () => {
             lightColor: '#FF231F7C',
         });
     }
+
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+        console.log("requesting permission")
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+    }
+
+    console.log("permission's been granted")
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token)
 
     return token;
 }

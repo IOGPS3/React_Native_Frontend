@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { styles } from '../../Styling/components/EmployeeDetailsStyle';
-import { SendPushNotification, SendCustomPush } from '../Notification';
+import { SendCustomPush } from '../Notification';
 
 const EmployeeDetails = ({ route }) => {
     const { employee } = route.params;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, Text, Modal, Button } from 'react-native';
+import { View, Image, Text, Modal, Button, TextInput, Pressable } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,7 +11,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RegisterForPushNotification } from './components/Notification';
 
 import * as Notifications from 'expo-notifications';
-import RespondPing from './components/RespondPing';
+//import RespondPing from './components/RespondPing';
+import { SendCustomPush } from './components/Notification';
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -38,7 +39,6 @@ const Home = () => {
         </View>
     );
 };
-
 
 const Settings = () => {
     return <View />;
@@ -88,7 +88,6 @@ const CustomDrawerContent = (props) => {
     );
 };
 
-
 const CustomHeader = ({ navigation }) => {
     return (
         <SafeAreaView edges={['top']} style={{ backgroundColor: 'white' }}>
@@ -106,10 +105,10 @@ const CustomHeader = ({ navigation }) => {
     );
 };
 
-
 const App = () => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [notificationData, setNotificationData] = useState(null);
+    const [text, onChangeText] = React.useState('Lets meet at ...');
 
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
@@ -143,7 +142,8 @@ const App = () => {
 
     const notificationCommonHandler = (notification) => {
         //Receive event
-        console.log('A notification has been received', notification)
+        //console.log('A notification has been received', notification)
+        console.log("A notification has Arrived")
     }
 
     const notificationNavigationHandler = ({ data }) => {
@@ -155,6 +155,21 @@ const App = () => {
         setNotificationData(data);
         setModalVisible(true);
     }
+
+    const handlePress = async () => {
+        //change to custom message and read token from db or whatever
+        let token = null;
+        let title = "Response";
+        let body = text;
+        let data = { senderID: "User2", messageType: "ResponseToPing" };
+
+        if (token == null) {
+            console.warn("Receiving token is still not set here in app.js, (please paste own token here for now to test)");
+        }
+
+        //await SendPushNotification(token);
+        await SendCustomPush(token, title, body, data)
+    };
 
     const closeModal = () => {
         setModalVisible(false);
@@ -169,6 +184,19 @@ const App = () => {
                     <Text>Notification Data:</Text>
                     <Text>{notificationData.senderID}</Text>
                     <Text>{notificationData.body}</Text>
+
+                    <Text>Your Response</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeText}
+                        value={text}
+                    />
+
+                    <Pressable
+                        style={[styles.button]}
+                        onPress={handlePress}>
+                        <Text style={styles.textStyle}>Send</Text>
+                    </Pressable>
                 </View>
             );
         }
@@ -187,7 +215,6 @@ const App = () => {
                     <Drawer.Screen name="SearchCoworker" component={SearchCoworker} />
                     <Drawer.Screen name="Settings" component={Settings} />
                     <Drawer.Screen name="Logout" component={Logout} />
-                    <Drawer.Screen name="RespondPing" component={RespondPing} />
                 </Drawer.Navigator>
             </NavigationContainer>
 

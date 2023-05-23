@@ -1,20 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { styles } from '../../Styling/components/EmployeeDetailsStyle';
-import { SendPushNotification, SendCustomPush } from '../Notification';
+import { styles } from '../Styling/components/EmployeeDetailsStyle';
+import { SendCustomPush } from './Notification';
 
-const EmployeeDetails = ({ route }) => {
-    const { employee } = route.params;
+const RespondPing = ({ route }) => {
+    const { message } = route.params;
 
     const handlePress = async () => {
         //change to custom message and read token from db or whatever
         let token = "ExponentPushToken[kPHezhNKpQJihMQ7Yn1EPY]";
         let title = "The Testing Title";
         let body = "Someone wants to see you";
-        let data = { senderID: "User1", messageType: "RespondPing"};
+        let data = { senderID: "User1", messageType: "RespondPing" };
 
         if (token == null) {
-            console.warn("Receiving token is still not set here in EmployeeDetails.js, (please paste own token here for now to test)");
+            console.warn("Receiving token is still not set here in RespondPing.js, (please paste own token here for now to test)");
         }
 
         //await SendPushNotification(token);
@@ -23,9 +23,7 @@ const EmployeeDetails = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>{employee.Name}</Text>
-            <Text style={styles.text}>{employee.Location}</Text>
-            <Text style={styles.text}>{employee.MeetingStatus === 'available' ? 'Available' : 'In a meeting'}</Text>
+            <Text style={styles.text}>{message.senderID} is looking for you</Text>
             <Pressable
                 style={[styles.button]}
                 onPress={handlePress}>
@@ -35,4 +33,4 @@ const EmployeeDetails = ({ route }) => {
     );
 };
 
-export default EmployeeDetails;
+export default RespondPing;

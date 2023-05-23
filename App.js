@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { View, Image, Text, Modal, Button } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
 import SearchCoworker from './components/SearchCoworker/SearchCoworker';
@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RegisterForPushNotification } from './components/Notification';
 
 import * as Notifications from 'expo-notifications';
+import RespondPing from './components/RespondPing';
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -107,6 +108,9 @@ const CustomHeader = ({ navigation }) => {
 
 
 const App = () => {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [notificationData, setNotificationData] = useState(null);
+
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
@@ -118,33 +122,81 @@ const App = () => {
             //console.log(token);
         });
 
+        // This listener is fired whenever a notification is received while the app is foregrounded
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
+            notificationCommonHandler(notification);
         });
 
+        // This listener is fired whenever a user taps on or interacts with a notification 
+        // (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
+            notificationCommonHandler(response.notification);
+            notificationNavigationHandler(response.notification.request.content);
         });
 
+        // The listeners must be clear on app unmount
         return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
+            Notifications.removeNotificationSubscription(notificationListener);
+            Notifications.removeNotificationSubscription(responseListener);
         };
     }, []);
 
+    const notificationCommonHandler = (notification) => {
+        //Receive event
+        console.log('A notification has been received', notification)
+    }
+
+    const notificationNavigationHandler = ({ data }) => {
+        //Click event
+        console.log('Notification has been clicked', data)
+
+        //navigate to the respondPing with the data
+
+        setNotificationData(data);
+        setModalVisible(true);
+    }
+
+    const closeModal = () => {
+        setModalVisible(false);
+        setNotificationData(null);
+    };
+
+    const renderModalContent = () => {
+        if (notificationData) {
+            return (
+                <View style={{ padding: 20 }}>
+                    <Button title="Close" onPress={closeModal} />
+                    <Text>Notification Data:</Text>
+                    <Text>{notificationData.senderID}</Text>
+                    <Text>{notificationData.body}</Text>
+                </View>
+            );
+        }
+
+        return null;
+    };
+
     return (
-        <NavigationContainer>
-            <Drawer.Navigator
-                drawerContent={(props) => <CustomDrawerContent {...props} />}
-                screenOptions={{ header: (props) => <CustomHeader {...props} /> }}
-            >
-                <Drawer.Screen name="Home" component={Home} />
-                <Drawer.Screen name="SearchCoworker" component={SearchCoworker} />
-                <Drawer.Screen name="Settings" component={Settings} />
-                <Drawer.Screen name="Logout" component={Logout} />
-                
-            </Drawer.Navigator>
-        </NavigationContainer>
+        <View style={{ flex: 1 }}>
+            <NavigationContainer>
+                <Drawer.Navigator
+                    drawerContent={(props) => <CustomDrawerContent {...props} />}
+                    screenOptions={{ header: (props) => <CustomHeader {...props} /> }}
+                >
+                    <Drawer.Screen name="Home" component={Home} />
+                    <Drawer.Screen name="SearchCoworker" component={SearchCoworker} />
+                    <Drawer.Screen name="Settings" component={Settings} />
+                    <Drawer.Screen name="Logout" component={Logout} />
+                    <Drawer.Screen name="RespondPing" component={RespondPing} />
+                </Drawer.Navigator>
+            </NavigationContainer>
+
+            <Modal visible={isModalVisible} animationType="slide">
+                <View style={{ flex: 1 }}>
+                    {renderModalContent()}
+                </View>
+            </Modal>
+        </View>
     );
 };
 

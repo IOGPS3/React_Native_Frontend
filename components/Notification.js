@@ -75,3 +75,23 @@ export const SendPushNotification = async (expoPushToken) => {
         body: JSON.stringify(message),
     });
 }
+
+export const SendCustomPush = async (expoPushToken, titleVar, bodyVar, dataVar) => {
+    const message = {
+        to: expoPushToken,
+        sound: 'default',
+        title: titleVar,
+        body: bodyVar,
+        data: dataVar,
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+    });
+}

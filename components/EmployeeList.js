@@ -10,6 +10,7 @@ import { Icon } from '@rneui/base';
 
 //import styling
 import { styles } from '../Styling/components/EmployeeListStyle';
+import { Type } from '../../../../AppData/Local/Microsoft/TypeScript/4.9/node_modules/@sinclair/typebox/typebox';
 
 /**
  * A component that displays a list of employees and allows the user to view their details.
@@ -22,6 +23,7 @@ const EmployeeList = () => {
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [color, setcolor] = useState('000000');
 
     // Fetch data from Firebase Real-Time Database and update the employeeData state
     useEffect(() => {
@@ -112,76 +114,124 @@ const EmployeeList = () => {
     };
 
     /**
-   * This component displays a list of employees with the ability to search for them and view details about a selected employee.
-   * 
-   * Props:
-   * - employees: an array of employee objects with properties "name" and "location"
-   * - onEmployeePress: a function that takes an employee object as an argument and is called when an employee is selected
-   * 
-   * State:
-   * - selectedEmployee: the employee object that is currently selected
-   * - searchQuery: the current search query entered by the user
-   * - modalVisible: a boolean that determines whether the modal for the selected employee is visible or not
-   * 
-   * @returns a View component containing a TextInput for searching, a SectionList for displaying the employee list, and a modal for displaying employee details.
-   */
-    return (
-        <View style={styles.container}>
-            {selectedEmployee && (
-                <View style={styles.selectedEmployeeContainer}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            //Alert.alert('Modal has been closed.');
-                            setModalVisible(!modalVisible);
-                        }}>
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <View style={{ width: 300, Height: 600, flexDirection: 'row' }}>
-                                    <Icon reverse name='arrow-back' onPress={() => setModalVisible(!modalVisible)} />
-                                    <Text style={styles.modalText}>{selectedEmployee.name}</Text>
-                                    <Icon name='star' style={{ marginLeft: 30 }} />
-                                </View>
-                                <Text style={styles.modalText}>{selectedEmployee.location}</Text>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Ping</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
-            )}
-            {/* TextInput component to display the searchbar*/}
-            <TextInput
-                style={styles.searchInput}
-                value={searchQuery}
-                onChangeText={query => setSearchQuery(query)}
-                placeholder="Search employees"
-            />
-            {/* SectionList component to display the employee list */}
-            <SectionList
-                sections={
-                    searchQuery
-                        ? [{ data: filteredEmployees }]
-                        : sections
+     *  Changes the star icon displayed within the details model whenever pressed.
+     *  TODO: Still needs to have an API call implemented within to change the state
+     *  @returns {Icon} returns an icon with a different color from the original
+     */
+    const IconFavoriteSwitch = () => {
+
+        setcolor(color === 'black' ? 'goldenrod' : 'black');
+        UpfateFavoriteStatus(color);
+        //tell api to switch whether or not said person is favorited
+        return (
+            <Icon name="star" color={color} onPress={IconFavoriteSwitch} />
+        );
+    }
+
+    /**
+     * Sends an api call including a single integer, this integer is based on the current color.
+     * Logs whenever something goes well and whenever something doesn't go well
+     * @param {any} value SHOULD be an int
+     */
+    const UpdateFavoriteStatus = async (value) => {
+        if (value === 'black') { //If the current status of the color is black the value gets set to 0 otherwise it gets set to 1
+            value = 0;
+        } else {
+            value = 1;
+        }
+        try {
+            const response = await fetch('###api goes here###', {
+                method: 'POST', // it'll send a value based on the current setcolor, the api will then handle this change
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-                keyExtractor={(item, index) => item.name + index}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handleEmployeePress(item)}>
-                        <Text style={styles.item}>{item.name}</Text>
-                    </TouchableOpacity>
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.header}>{title}</Text>
-                )}
-                extraData={searchQuery}
-            />
-        </View>
-    );
+                body: JSON.stringify({ value }), //converts the value to JSON
+
+            });
+            if (response.ok) {
+                console.log('Status update order sent') //logs if it works or no
+            } else {
+                console.log('Error updating status: ', response.status) //logs whenever it doesn't work
+            }
+        } catch (error) {
+            console.log('Error sending data: ', error) //logs whenever an error might occur
+        }
+
+    }
+
+}
+
+/**
+* This component displays a list of employees with the ability to search for them and view details about a selected employee.
+* 
+* Props:
+* - employees: an array of employee objects with properties "name" and "location"
+* - onEmployeePress: a function that takes an employee object as an argument and is called when an employee is selected
+* 
+* State:
+* - selectedEmployee: the employee object that is currently selected
+* - searchQuery: the current search query entered by the user
+* - modalVisible: a boolean that determines whether the modal for the selected employee is visible or not
+* 
+* @returns a View component containing a TextInput for searching, a SectionList for displaying the employee list, and a modal for displaying employee details.
+*/
+return (
+    <View style={styles.container}>
+        {selectedEmployee && (
+            <View style={styles.selectedEmployeeContainer}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        //Alert.alert('Modal has been closed.');
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <View style={{ width: 300, Height: 600, flexDirection: 'row' }}>
+                                <Icon reverse name='arrow-back' onPress={() => setModalVisible(!modalVisible)} />
+                                <Text style={styles.modalText}>{selectedEmployee.name}</Text>
+                                <Icon name='star' color={color} style={{ marginLeft: 30 }} onPress={IconFavoriteSwitch} />
+                            </View>
+                            <Text style={styles.modalText}>{selectedEmployee.location}</Text>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setModalVisible(!modalVisible)}>
+                                <Text style={styles.textStyle}>Ping</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+        )}
+        {/* TextInput component to display the searchbar*/}
+        <TextInput
+            style={styles.searchInput}
+            value={searchQuery}
+            onChangeText={query => setSearchQuery(query)}
+            placeholder="Search employees"
+        />
+        {/* SectionList component to display the employee list */}
+        <SectionList
+            sections={
+                searchQuery
+                    ? [{ data: filteredEmployees }]
+                    : sections
+            }
+            keyExtractor={(item, index) => item.name + index}
+            renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleEmployeePress(item)}>
+                    <Text style={styles.item}>{item.name}</Text>
+                </TouchableOpacity>
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+                <Text style={styles.header}>{title}</Text>
+            )}
+            extraData={searchQuery}
+        />
+    </View>
+);
 };
 
 export default EmployeeList;

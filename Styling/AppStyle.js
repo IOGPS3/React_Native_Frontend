@@ -27,4 +27,16 @@ export const styles = StyleSheet.create({
     toggleContainer: {
         marginLeft: 'auto',
     },
+    ModalButton: {
+        borderRadius: 5,
+        paddingLeft: 5,
+        elevation: 2,
+        backgroundColor: '#2196F3',
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+    },
 });

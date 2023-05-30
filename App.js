@@ -158,17 +158,19 @@ const App = () => {
 
     const handlePress = async () => {
         //change to custom message and read token from db or whatever
-        let token = null;
+        let token = "ExponentPushToken[kPHezhNKpQJihMQ7Yn1EPY]";
         let title = "Response";
         let body = text;
-        let data = { senderID: "User2", messageType: "ResponseToPing" };
+        let data = { senderID: "User2", body: text, messageType: "ResponseToPing" };
 
         if (token == null) {
             console.warn("Receiving token is still not set here in app.js, (please paste own token here for now to test)");
         }
 
         //await SendPushNotification(token);
-        await SendCustomPush(token, title, body, data)
+        await SendCustomPush(token, title, body, data);
+
+        closeModal();
     };
 
     const closeModal = () => {
@@ -193,7 +195,7 @@ const App = () => {
                     />
 
                     <Pressable
-                        style={[styles.button]}
+                        style={[styles.ModalButton]}
                         onPress={handlePress}>
                         <Text style={styles.textStyle}>Send</Text>
                     </Pressable>

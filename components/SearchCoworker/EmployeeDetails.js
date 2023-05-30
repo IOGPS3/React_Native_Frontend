@@ -8,7 +8,7 @@ const EmployeeDetails = ({ route }) => {
 
     const handlePress = async () => {
         //change to custom message and read token from db or whatever
-        let token = null;
+        let token = "ExponentPushToken[kPHezhNKpQJihMQ7Yn1EPY]";
         let title = "The Testing Title";
         let body = "Someone wants to see you";
         let data = { senderID: "User1", messageType: "RespondPing"};

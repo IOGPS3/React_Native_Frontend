@@ -21,14 +21,14 @@ export const RegisterForPushNotification = async () => {
     }
 
     if (devOptions) {
-        console.log("Platform setnotifications has been setup")
+        console.log("Platform set notifications has been setup")
     }
 
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
     if (devOptions) {
-        console.log("Status checker = " + finalStatus)
+        //console.log("Status checker = " + finalStatus)
     }
 
     //if (existingStatus !== 'granted') {

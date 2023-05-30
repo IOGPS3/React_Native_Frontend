@@ -158,7 +158,7 @@ const App = () => {
 
     const handlePress = async () => {
         //change to custom message and read token from db or whatever
-        let token = "ExponentPushToken[kPHezhNKpQJihMQ7Yn1EPY]";
+        let token = expoPushToken;
         let title = "Response";
         let body = text;
         let data = { senderID: "User2", body: text, messageType: "ResponseToPing" };

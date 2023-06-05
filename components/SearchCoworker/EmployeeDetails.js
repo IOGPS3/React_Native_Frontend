@@ -8,13 +8,16 @@ const EmployeeDetails = ({ route }) => {
 
     const handlePress = async () => {
         //change to custom message and read token from db or whatever
-        let token = null;
-        let title = "The Testing Title";
-        let body = "Someone wants to see you";
-        let data = { senderID: "User1", messageType: "RespondPing"};
+        let ownToken = global.ownDeviceToken;
+        console.warn("Global token = " + ownToken);
 
-        if (token == null) {
-            console.warn("Receiving token is still not set here in EmployeeDetails.js, (please paste own token here for now to test)");
+        let token = employee.NotificationToken; //"ExponentPushToken[kPHezhNKpQJihMQ7Yn1EPY]"
+        let title = "Hello there";
+        let body = "Someone wants to see you";
+        let data = { senderID: "LogedInUserName", receivedToken: ownToken, body: "Let's meet up", messageType: "RespondPing" };
+
+        if (token == null || token == "null") {
+            console.error("NotificationToken from employee is not connected to a mobile device token");
         }
 
         //await SendPushNotification(token);

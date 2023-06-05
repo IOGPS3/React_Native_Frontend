@@ -118,6 +118,8 @@ const App = () => {
     useEffect(() => {
         RegisterForPushNotification().then(token => {
             setExpoPushToken(token);
+            //set the ownDeviceToken as a accessable variable for entire project
+            global.ownDeviceToken = token;
             //console.log(token);
         });
 
@@ -156,12 +158,14 @@ const App = () => {
         setModalVisible(true);
     }
 
-    const handlePress = async () => {
+    const handlePress = async (receivedToken) => {
         //change to custom message and read token from db or whatever
-        let token = expoPushToken;
-        let title = "Response";
+        let senderName = "OwnDevice";
+
+        let token = receivedToken;
+        let title = "Response from " + senderName;
         let body = text;
-        let data = { senderID: "User2", body: text, messageType: "ResponseToPing" };
+        let data = { senderID: senderName, receivedToken: expoPushToken, body: text, messageType: "ResponseToPing" };
 
         if (token == null) {
             console.warn("Receiving token is still not set here in app.js, (please paste own token here for now to test)");
@@ -196,7 +200,7 @@ const App = () => {
 
                     <Pressable
                         style={[styles.ModalButton]}
-                        onPress={handlePress}>
+                        onPress={() => handlePress(notificationData.receivedToken)}>
                         <Text style={styles.textStyle}>Send</Text>
                     </Pressable>
                 </View>

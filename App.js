@@ -162,6 +162,8 @@ const App = () => {
         //change to custom message and read token from db or whatever
         let senderName = "OwnDevice";
 
+        //console.warn("TOTOKEN is " + receivedTokenx);
+
         let token = receivedToken;
         let title = "Response from " + senderName;
         let body = text;

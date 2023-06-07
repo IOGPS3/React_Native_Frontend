@@ -9,7 +9,7 @@ const EmployeeDetails = ({ route }) => {
     const handlePress = async () => {
         //change to custom message and read token from db or whatever
         let ownToken = global.ownDeviceToken;
-        console.warn("Global token = " + ownToken);
+        //console.warn("Global token = " + ownToken);
 
         let token = employee.NotificationToken; //"ExponentPushToken[kPHezhNKpQJihMQ7Yn1EPY]"
         let title = "Hello there";

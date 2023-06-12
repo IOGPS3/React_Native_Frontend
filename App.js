@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -10,13 +10,35 @@ import logo from './assets/iO-logo.png';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
+function testApi() {
+    console.log('testApi function called');
+    fetch('http://192.168.1.191:5283/api/Employee/Test', {
+        method: 'GET', // or 'POST'
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer ' + YOUR_TOKEN (if needed)
+        }
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((json) => console.log(json))
+        .catch((error) => console.error(error))
+}
 
 
 const Home = () => {
+    console.log('App loaded');
     return (
         <View style={styles.container}>
             <Text style={styles.font}>Welcome back</Text>
-
+            <Button
+                title="Test API"
+                onPress={testApi}
+            />
             <Text style={styles.font}>Currently working from</Text>
 
             <View style={styles.rowContainer}>

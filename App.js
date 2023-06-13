@@ -112,23 +112,23 @@ const CustomHeader = ({ navigation }) => {
 };
 
 const App = () => {
+    //Modal and Notification variables
     const [isModalVisible, setModalVisible] = useState(false);
     const [notificationData, setNotificationData] = useState(null);
     const [text, onChangeText] = React.useState('Lets meet at ...');
-
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
 
     //Login variables
-    //const auth = getAuth();
     const database = getDatabase();
     const usersRef = ref(database, 'users');
     const [employeeData, setEmployeeData] = useState([]);
 
     const [user, setUser] = useState();
     const [email, onChangeEmail] = useState();
+    const [name, onChangeName] = useState();
     const [password, onChangePassword] = useState();
 
     //START NOTIFICATION data
@@ -263,21 +263,15 @@ const App = () => {
     }, [])
 
     const handleLogin = () => {
-        //auth.signInWithEmailAndPassword(email, password).then(() => { console.log("User signed in") })
-        //    .catch(error => {
-        //        console.log("Something went wrong with the given data")
-        //        //console.error(error)
-        //    })
-
-        //send to api/db
-
-        //retrieve status
+        //check list
         for (const item of employeeData) {
             //console.log(item);
 
+            //Password go encrypt
             const encryptedPass = MD5(password).toString();
             //console.log(encryptedPass);
 
+            //check login data
             if (item.Email === email && item.Password == encryptedPass) {
                 //Save the data(or partially if only unique is needed)
                 setUser(item)
@@ -285,11 +279,18 @@ const App = () => {
                 //stop the list
                 console.warn("User has been found");
 
+                //check if there are favorites and if not set it to null
+                const favorites = item.Favorites;
+                if (!favorites) {
+                    favorites = null;
+                }
+
                 //update the user's NotificationToken in the database
                 const updateLink = ref(database, 'users/' + item.id);
                 console.log(updateLink);
                 set(updateLink, {
                     Email: item.Email,
+                    Favorites: favorites,
                     Location: item.Location,
                     MeetingStatus: item.MeetingStatus,
                     Name: item.Name,
@@ -316,19 +317,104 @@ const App = () => {
     }
 
     const handleRegister = () => {
-        //auth.createUserWithEmailAndPassword(email, password).then(() => { console.log("User created account") })
-        //    .catch(error => {
-        //        if (error.code == "auth/email-already-in-use") {
-        //            console.log("Email is already in use")
-        //        }
+        const location = "Home";
+        const meetingStatus = "Available";
+        const favorites = null;
 
-        //        if (error.code == "auth/invalid-email") {
-        //            console.log("Email was invalid")
-        //        }
+        const encryptedPass = MD5(password).toString();
 
-        //        console.error(error);
-        //    })
+        //get the unique code for the new employee
+        var uniqueCode = "tempCode";
+        var foundAvailableCode = false;
+
+        //counting numbers
+        const listAmount = employeeData.length;
+        var counter = 0;
+
+        console.log("Amount of list is: " + listAmount);
+
+        //loop through the list for available code
+        for (const item of employeeData) {
+            const takenCode = item.id;
+            const tempCode = "user" + counter;
+
+            //check the takencode with the counter
+            if (takenCode != tempCode) {
+                uniqueCode = tempCode;
+                foundAvailableCode = true;
+
+                break;
+            }
+
+            //increment
+            counter = counter + 1;
+        }
+
+        if (!foundAvailableCode) {
+            //get the latest row number
+            uniqueCode = "user" + listAmount;
+        }
+
+        //get the link to the users with the unique code link
+        const updateLink = ref(database, 'users/' + uniqueCode);
+
+        //data for the new user
+        const registerUserData = {
+            Email: email,
+            Favorites: favorites,
+            Location: location,
+            MeetingStatus: meetingStatus,
+            Name: name,
+            NotificationToken: expoPushToken,
+            Password: encryptedPass
+        };
+
+        console.log(registerUserData);
+
+        //set the user
+        set(updateLink, registerUserData).then(() => {
+            console.log("Registered");
+        }).catch((error) => {
+            console.error("Error updating the data", error);
+        });
+
+        //console.log(updateLink);
+
+        closeModal();
+
+        //set the user
+        setUser(registerUserData);
+
+        //go brbrr
     }
+
+    const renderRegisterModalContent = () => {
+            return (
+                <View style={{ padding: 20 }}>
+                    <Button title="Close" onPress={closeModal} />
+                    <Text>Register Here</Text>
+                    <Text>Email:</Text>
+                    <TextInput style={styles.input}
+                        onChangeText={onChangeEmail}
+                        value={email} />
+                    <Text>Name:</Text>
+                    <TextInput style={styles.input}
+                        onChangeText={onChangeName}
+                        value={name} />
+                    <Text>Password:</Text>
+                    <TextInput style={styles.input}
+                        onChangeText={onChangePassword}
+                        value={password} />
+
+                    <Pressable
+                        style={[styles.ModalButton]}
+                        onPress={() => handleRegister()}>
+                        <Text style={styles.textStyle}>Send</Text>
+                    </Pressable>
+                </View>
+            );
+    };
+
 
     const logout = () => {
         setUser(null);
@@ -399,9 +485,15 @@ const App = () => {
                 </Pressable>
                 <Pressable
                     style={[styles.ModalButton]}
-                    onPress={() => handleRegister()}>
+                    onPress={() => setModalVisible(true)}>
                     <Text style={styles.textStyle}>Register</Text>
                 </Pressable>
+
+                <Modal visible={isModalVisible} animationType="slide">
+                    <View style={{ flex: 1 }}>
+                        {renderRegisterModalContent()}
+                    </View>
+                </Modal>
             </View>
         )  
     }

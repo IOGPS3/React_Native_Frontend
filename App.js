@@ -12,8 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 function testApi() {
     console.log('testApi function called');
-    fetch('http://192.168.1.191:5283/api/Employee/Test', {
-        method: 'GET', // or 'POST'
+    fetch('http://localhost:5283/api/Employee/Test', {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             // 'Authorization': 'Bearer ' + YOUR_TOKEN (if needed)
@@ -23,10 +23,11 @@ function testApi() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json();
+            return response.text();
         })
-        .then((json) => console.log(json))
+        .then((text) => console.log(text))
         .catch((error) => console.error(error))
+
 }
 
 

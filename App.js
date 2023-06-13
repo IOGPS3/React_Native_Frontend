@@ -12,6 +12,9 @@ import { RegisterForPushNotification } from './components/Notification';
 
 //import { getAuth } from 'firebase/auth';
 //import auth from '@react-native-firebase/auth';
+import { getDatabase, ref, onValue } from 'firebase/database';
+//import { bcrypt } from "bcrypt.js"; 
+import { MD5 } from 'crypto-es/lib/md5.js';
 
 import * as Notifications from 'expo-notifications';
 //import RespondPing from './components/RespondPing';
@@ -120,6 +123,10 @@ const App = () => {
 
     //Login variables
     //const auth = getAuth();
+    const database = getDatabase();
+    const usersRef = ref(database, 'users');
+    const [employeeData, setEmployeeData] = useState([]);
+
     const [user, setUser] = useState();
     const [email, onChangeEmail] = useState();
     const [password, onChangePassword] = useState();
@@ -233,10 +240,27 @@ const App = () => {
     //    console.log("User: " + user);
     //}
 
-    //useEffect(() => {
-    //    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    //    return subscriber; //unsubscribe on unmount
-    //}, [])
+    useEffect(() => {
+        // Set up a listener for changes in the 'users' node
+        // The listener will be called with a snapshot of the data whenever it changes
+        const unsubscribe = onValue(usersRef, (snapshot) => {
+            const users = snapshot.val();
+
+            // Updated formatting of user data to include the user key as 'id'
+            const formattedUsers = Object.entries(users || {}).map(([id, userData]) => ({
+                id,
+                ...userData,
+            }));
+
+            // Update the employeeData state with the fetched data
+            setEmployeeData(formattedUsers);
+        });
+
+        // Clean up the listener when the component is unmounted
+        return () => {
+            unsubscribe();
+        };
+    }, [])
 
     const handleLogin = () => {
         //auth.signInWithEmailAndPassword(email, password).then(() => { console.log("User signed in") })
@@ -248,9 +272,32 @@ const App = () => {
         //send to api/db
 
         //retrieve status
+        for (const item of employeeData) {
+            //console.log(item);
+
+            const encryptedPass = MD5(password).toString();
+            //console.log(encryptedPass);
+
+            if (item.Email === email && item.Password == encryptedPass) {
+                //Save the data(or partially if only unique is needed)
+                setUser(item)
+
+                //stop the list
+                console.warn("User has been found");
+
+                //update the user's NotificationToken in the database
+
+                break;
+            }
+        }
 
         //handle
-        setUser(true);
+        //setUser(true);
+
+        //check if user is null return an error about login incorrect
+        if (!user) {
+            console.error("Login was incorrect, please try again with the CORRECT data");
+        }
     }
 
     const handleRegister = () => {

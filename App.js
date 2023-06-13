@@ -12,7 +12,7 @@ import { RegisterForPushNotification } from './components/Notification';
 
 //import { getAuth } from 'firebase/auth';
 //import auth from '@react-native-firebase/auth';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue, set } from 'firebase/database';
 //import { bcrypt } from "bcrypt.js"; 
 import { MD5 } from 'crypto-es/lib/md5.js';
 
@@ -286,6 +286,14 @@ const App = () => {
                 console.warn("User has been found");
 
                 //update the user's NotificationToken in the database
+                const updateLink = ref(database, 'users/' + item.id);
+                console.log(updateLink);
+                set(updateLink, { NotificationToken: expoPushToken }).then(() => {
+                    console.log("YAHOO UPDATED the token");
+                }).catch((error) => {
+                    console.error("Error updating the data", error);
+                });
+                //console.log(updateLink);
 
                 break;
             }

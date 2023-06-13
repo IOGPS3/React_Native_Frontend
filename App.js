@@ -10,6 +10,9 @@ import logo from './assets/iO-logo.png';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RegisterForPushNotification } from './components/Notification';
 
+//import { getAuth } from 'firebase/auth';
+//import auth from '@react-native-firebase/auth';
+
 import * as Notifications from 'expo-notifications';
 //import RespondPing from './components/RespondPing';
 import { SendCustomPush } from './components/Notification';
@@ -115,6 +118,13 @@ const App = () => {
     const notificationListener = useRef();
     const responseListener = useRef();
 
+    //Login variables
+    //const auth = getAuth();
+    const [user, setUser] = useState();
+    const [email, onChangeEmail] = useState();
+    const [password, onChangePassword] = useState();
+
+    //START NOTIFICATION data
     useEffect(() => {
         RegisterForPushNotification().then(token => {
             setExpoPushToken(token);
@@ -212,27 +222,152 @@ const App = () => {
         return null;
     };
 
-    return (
-        <View style={{ flex: 1 }}>
-            <NavigationContainer>
-                <Drawer.Navigator
-                    drawerContent={(props) => <CustomDrawerContent {...props} />}
-                    screenOptions={{ header: (props) => <CustomHeader {...props} /> }}
-                >
-                    <Drawer.Screen name="Home" component={Home} />
-                    <Drawer.Screen name="SearchCoworker" component={SearchCoworker} />
-                    <Drawer.Screen name="Settings" component={Settings} />
-                    <Drawer.Screen name="Logout" component={Logout} />
-                </Drawer.Navigator>
-            </NavigationContainer>
+    //END NOTIFICATION
 
-            <Modal visible={isModalVisible} animationType="slide">
-                <View style={{ flex: 1 }}>
-                    {renderModalContent()}
-                </View>
-            </Modal>
-        </View>
-    );
+
+
+    //START LOGIN
+
+    //const onAuthStateChanged = (user) => {
+    //    setUser(user);
+    //    console.log("User: " + user);
+    //}
+
+    //useEffect(() => {
+    //    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    //    return subscriber; //unsubscribe on unmount
+    //}, [])
+
+    const handleLogin = () => {
+        //auth.signInWithEmailAndPassword(email, password).then(() => { console.log("User signed in") })
+        //    .catch(error => {
+        //        console.log("Something went wrong with the given data")
+        //        //console.error(error)
+        //    })
+
+        //send to api/db
+
+        //retrieve status
+
+        //handle
+        setUser(true);
+    }
+
+    const handleRegister = () => {
+        //auth.createUserWithEmailAndPassword(email, password).then(() => { console.log("User created account") })
+        //    .catch(error => {
+        //        if (error.code == "auth/email-already-in-use") {
+        //            console.log("Email is already in use")
+        //        }
+
+        //        if (error.code == "auth/invalid-email") {
+        //            console.log("Email was invalid")
+        //        }
+
+        //        console.error(error);
+        //    })
+    }
+
+    const logout = () => {
+        setUser(null);
+    }
+
+    const Logout = () => {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.font}>Are you sure?</Text>
+
+                <Pressable
+                    onPress={() => logout()}>
+                    <Text style={styles.textStyle}>Yes</Text>
+                </Pressable>
+
+                <Pressable
+                    onPress={() => Home()}>
+                    <Text style={styles.textStyle}>No</Text>
+                </Pressable>
+            </View>
+        );        
+    }
+
+    const renderLoginContent = () => {
+        return (
+            <View style={{ flex: 1 }}>
+                <Text>Login</Text>
+                <Text>Email:</Text>
+                <TextInput style={styles.input}
+                    onChangeText={onChangeEmail}
+                    value={email} />
+                <Text>Password:</Text>
+                <TextInput style={styles.input}
+                    onChangeText={onChangePassword}
+                    value={password} />
+                <Pressable
+                    style={[styles.ModalButton]}
+                    onPress={() => handleLogin()}>
+                    <Text style={styles.textStyle}>Login</Text>
+                </Pressable>
+                <Pressable
+                    style={[styles.ModalButton]}
+                    onPress={() => handleRegister()}>
+                    <Text style={styles.textStyle}>Register</Text>
+                </Pressable>
+            </View>
+        )
+    };
+
+    //if (initializing) return null;
+
+    if (!user) {
+        return (
+            <View style={{ flex: 1 }}>
+                <Text>Login</Text>
+                <Text>Email:</Text>
+                <TextInput style={styles.input}
+                    onChangeText={onChangeEmail}
+                    value={email} />
+                <Text>Password:</Text>
+                <TextInput style={styles.input}
+                    onChangeText={onChangePassword}
+                    value={password} />
+                <Pressable
+                    style={[styles.ModalButton]}
+                    onPress={() => handleLogin()}>
+                    <Text style={styles.textStyle}>Login</Text>
+                </Pressable>
+                <Pressable
+                    style={[styles.ModalButton]}
+                    onPress={() => handleRegister()}>
+                    <Text style={styles.textStyle}>Register</Text>
+                </Pressable>
+            </View>
+        )  
+    }
+    else {
+        return (
+            <View style={{ flex: 1 }}>
+                <NavigationContainer>
+                    <Drawer.Navigator
+                        drawerContent={(props) => <CustomDrawerContent {...props} />}
+                        screenOptions={{ header: (props) => <CustomHeader {...props} /> }}
+                    >
+                        <Drawer.Screen name="Home" component={Home} />
+                        <Drawer.Screen name="SearchCoworker" component={SearchCoworker} />
+                        <Drawer.Screen name="Settings" component={Settings} />
+                        <Drawer.Screen name="Logout" component={Logout} />
+                    </Drawer.Navigator>
+                </NavigationContainer>
+
+                <Modal visible={isModalVisible} animationType="slide">
+                    <View style={{ flex: 1 }}>
+                        {renderModalContent()}
+                    </View>
+                </Modal>
+            </View>
+        );
+    }
+
+    //END LOGIN
 };
 
 export default App;

@@ -288,7 +288,14 @@ const App = () => {
                 //update the user's NotificationToken in the database
                 const updateLink = ref(database, 'users/' + item.id);
                 console.log(updateLink);
-                set(updateLink, { NotificationToken: expoPushToken }).then(() => {
+                set(updateLink, {
+                    Email: item.Email,
+                    Location: item.Location,
+                    MeetingStatus: item.MeetingStatus,
+                    Name: item.Name,
+                    NotificationToken: expoPushToken,
+                    Password: item.Password
+                }).then(() => {
                     console.log("YAHOO UPDATED the token");
                 }).catch((error) => {
                     console.error("Error updating the data", error);

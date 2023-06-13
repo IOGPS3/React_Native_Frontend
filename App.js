@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 function testApi() {
     console.log('testApi function called');
+    // Here the link for the AWS container should be added
     fetch('http://localhost:5283/api/Employee/Test', {
         method: 'GET',
         headers: {

@@ -451,7 +451,8 @@ const App = () => {
                 <Text style={styles.font}>Password:</Text>
                 <TextInput style={styles.input}
                     onChangeText={onChangePassword}
-                    value={password} />
+                    value={password}
+                    secureTextEntry={true}/>
                 <Pressable
                     style={[styles.ModalButton]}
                     onPress={() => handleLogin()}>

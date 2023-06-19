@@ -391,17 +391,17 @@ const App = () => {
     const renderRegisterModalContent = () => {
             return (
                 <View style={{ padding: 20 }}>
-                    <Button title="Close" onPress={closeModal} />
-                    <Text>Register Here</Text>
-                    <Text>Email:</Text>
+                    <Button title="Go Back" onPress={closeModal} />
+                    <Text style={styles.font}></Text>
+                    <Text style={styles.font}>Email:</Text>
                     <TextInput style={styles.input}
                         onChangeText={onChangeEmail}
                         value={email} />
-                    <Text>Name:</Text>
+                    <Text style={styles.font}>Name:</Text>
                     <TextInput style={styles.input}
                         onChangeText={onChangeName}
                         value={name} />
-                    <Text>Password:</Text>
+                    <Text style={styles.font}>Password:</Text>
                     <TextInput style={styles.input}
                         onChangeText={onChangePassword}
                         value={password} />
@@ -409,7 +409,7 @@ const App = () => {
                     <Pressable
                         style={[styles.ModalButton]}
                         onPress={() => handleRegister()}>
-                        <Text style={styles.textStyle}>Send</Text>
+                        <Text style={styles.fontAligned}>Send</Text>
                     </Pressable>
                 </View>
             );
@@ -438,55 +438,29 @@ const App = () => {
         );        
     }
 
-    const renderLoginContent = () => {
-        return (
-            <View style={{ flex: 1 }}>
-                <Text>Login</Text>
-                <Text>Email:</Text>
-                <TextInput style={styles.input}
-                    onChangeText={onChangeEmail}
-                    value={email} />
-                <Text>Password:</Text>
-                <TextInput style={styles.input}
-                    onChangeText={onChangePassword}
-                    value={password} />
-                <Pressable
-                    style={[styles.ModalButton]}
-                    onPress={() => handleLogin()}>
-                    <Text style={styles.textStyle}>Login</Text>
-                </Pressable>
-                <Pressable
-                    style={[styles.ModalButton]}
-                    onPress={() => handleRegister()}>
-                    <Text style={styles.textStyle}>Register</Text>
-                </Pressable>
-            </View>
-        )
-    };
-
     //if (initializing) return null;
 
     if (!user) {
         return (
-            <View style={{ flex: 1 }}>
-                <Text>Login</Text>
-                <Text>Email:</Text>
+            <View style={styles.container}>
+                <Text style={styles.font}></Text>
+                <Text style={styles.font}>Email:</Text>
                 <TextInput style={styles.input}
                     onChangeText={onChangeEmail}
                     value={email} />
-                <Text>Password:</Text>
+                <Text style={styles.font}>Password:</Text>
                 <TextInput style={styles.input}
                     onChangeText={onChangePassword}
                     value={password} />
                 <Pressable
                     style={[styles.ModalButton]}
                     onPress={() => handleLogin()}>
-                    <Text style={styles.textStyle}>Login</Text>
+                    <Text style={styles.fontAligned}>Login</Text>
                 </Pressable>
                 <Pressable
-                    style={[styles.ModalButton]}
+                    style={[styles.RegisterButton]}
                     onPress={() => setModalVisible(true)}>
-                    <Text style={styles.textStyle}>Register</Text>
+                    <Text style={styles.fontAligned}>Register</Text>
                 </Pressable>
 
                 <Modal visible={isModalVisible} animationType="slide">

@@ -397,15 +397,15 @@ const App = () => {
                     <TextInput style={styles.input}
                         onChangeText={onChangeEmail}
                         value={email} />
+                    <Text style={styles.font}>Password:</Text>
+                    <TextInput style={styles.input}
+                        onChangeText={onChangePassword}
+                        value={password}
+                        secureTextEntry={true} />
                     <Text style={styles.font}>Name:</Text>
                     <TextInput style={styles.input}
                         onChangeText={onChangeName}
                         value={name} />
-                    <Text style={styles.font}>Password:</Text>
-                    <TextInput style={styles.input}
-                        onChangeText={onChangePassword}
-                        value={password} />
-
                     <Pressable
                         style={[styles.ModalButton]}
                         onPress={() => handleRegister()}>

@@ -219,8 +219,9 @@ const App = () => {
 
                     <Pressable
                         style={[styles.ModalButton]}
-                        onPress={() => handlePress(notificationData.receivedToken)}>
-                        <Text style={styles.textStyle}>Send</Text>
+                        onPress={() => handlePress(notificationData.receivedToken)}
+                        style={styles.ModalButton}>
+                        <Text style={styles.fontAligned}>Send</Text>
                     </Pressable>
                 </View>
             );

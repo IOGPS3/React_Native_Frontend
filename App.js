@@ -280,7 +280,7 @@ const App = () => {
                 console.warn("User has been found");
 
                 //check if there are favorites and if not set it to null
-                const favorites = item.Favorites;
+                var favorites = item.Favorites;
                 if (!favorites) {
                     favorites = null;
                 }
@@ -426,13 +426,15 @@ const App = () => {
                 <Text style={styles.font}>Are you sure?</Text>
 
                 <Pressable
-                    onPress={() => logout()}>
-                    <Text style={styles.textStyle}>Yes</Text>
+                    onPress={() => logout()}
+                    style={styles.ModalButton}>
+                    <Text style={styles.fontAligned}>Yes</Text>
                 </Pressable>
 
                 <Pressable
-                    onPress={() => Home()}>
-                    <Text style={styles.textStyle}>No</Text>
+                    onPress={() => Home()}
+                    style={styles.ModalButton}>
+                    <Text style={styles.fontAligned}>No</Text>
                 </Pressable>
             </View>
         );        

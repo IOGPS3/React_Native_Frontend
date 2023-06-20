@@ -264,6 +264,8 @@ const App = () => {
 
     const handleLogin = () => {
         //check list
+        var temp = false;
+
         for (const item of employeeData) {
             //console.log(item);
 
@@ -276,8 +278,10 @@ const App = () => {
                 //Save the data(or partially if only unique is needed)
                 setUser(item)
 
+                temp = true;
+
                 //stop the list
-                console.warn("User has been found");
+                //console.warn("User has been found");
 
                 //check if there are favorites and if not set it to null
                 var favorites = item.Favorites;
@@ -311,7 +315,7 @@ const App = () => {
         //setUser(true);
 
         //check if user is null return an error about login incorrect
-        if (!user) {
+        if (!temp) {
             console.error("Login was incorrect, please try again with the CORRECT data");
         }
     }
